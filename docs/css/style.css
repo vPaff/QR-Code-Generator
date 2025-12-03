@@ -2608,4 +2608,8 @@ button, input, textarea, select {
   font-family: var(--app-font) !important;
 }
 
+html, body {
+  font-family: var(--app-font, "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif);
+}
+
 

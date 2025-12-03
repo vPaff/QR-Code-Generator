@@ -1,0 +1,2595 @@
+/* =========================
+   QR Code Generator (Modern)
+   Drop-in replacement style.css
+   ========================= */
+
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html, body {
+    background: linear-gradient(135deg, #dfe7f2, #e8eef7);
+    min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: linear-gradient(135deg, #dfe7f2, #e8eef7);
+  color: #0b1020;
+  overflow-y: auto;
+  font-synthesis: none;
+}
+
+
+/* Theme */
+:root {
+  --panel: #55c2ff;
+  --panel-2: rgba(255, 255, 255, 0.28);
+
+  --ink: #0b1020;
+  --border: #0b1020;
+
+  --primary: #0b74ff;
+  --primary-2: #0a63de;
+
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+
+  --shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 10px 24px rgba(0, 0, 0, 0.18);
+  --shadow-sm: 0 6px 14px rgba(0, 0, 0, 0.14);
+
+  --stroke: 3px;
+  --stroke-2: 2px;
+
+  --gap: clamp(14px, 2.2vw, 22px);
+  --gutter: clamp(14px, 3vw, 30px);
+
+  --content-max: 820px;
+  --history-w: 250px;
+
+  --control-h: clamp(44px, 6vw, 52px);
+}
+
+/* Main wrapper */
+.main-wrapper {
+  max-width: var(--content-max);
+  width: calc(100% - 24px); /* ✅ use % (no scrollbar math) */
+  margin: clamp(12px, 3vw, 30px) auto;
+
+  background: var(--panel);
+  border: var(--stroke) solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: clamp(14px, 2.8vw, 22px) clamp(16px, 3vw, 30px);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+  padding-top: clamp(10px, 2vw, 14px);  /* ✅ less space above title */
+  padding-bottom: clamp(14px, 2.8vw, 22px);
+}
+
+
+/* Subtle glossy highlight */
+.main-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(900px 260px at 50% 0%, rgba(255, 255, 255, 0.35), transparent 60%);
+}
+
+/* Title */
+h1, h2, .title, .header-title{
+  margin: 0 auto 14px;   /* ✅ was 6px auto 14px */
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  font-size: clamp(22px, 3vw, 36px);
+  line-height: 1.15;
+  position: relative;
+  z-index: 1;
+}
+
+
+/* Layout */
+.page-layout {
+  display: grid;
+  grid-template-columns: 1fr minmax(220px, var(--history-w));
+  gap: clamp(18px, 3vw, 28px);
+  align-items: start;
+  position: relative;
+  z-index: 1;
+}
+
+/* Left side content wrapper (safe even if you don't have it) */
+.left-panel,
+.left,
+.main-area {
+  min-width: 0;
+}
+
+/* ---------- Controls (input + extension) ---------- */
+.input-area {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  justify-content: center;
+  margin: 6px auto 12px;
+}
+
+#inputLink,
+.input-area input[type="text"],
+.input-area input {
+  flex: 1;
+  min-width: 0; /* prevents overflow on small screens */
+  height: var(--control-h);
+  padding: 0 16px;
+  font-size: clamp(16px, 2.2vw, 18px);
+  border: var(--stroke-2) solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+  outline: none;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.05);
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+
+#inputLink:focus,
+.input-area input:focus {
+  border-color: rgba(11, 16, 32, 0.95);
+  box-shadow: 0 0 0 4px rgba(11, 116, 255, 0.25), 0 8px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* Extension dropdown wrapper */
+.ext-dropdown {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+}
+
+/* Extension button (looks like your .com button) */
+#extBtn,
+.ext-btn,
+.side-btn {
+  height: var(--control-h);
+  min-width: clamp(84px, 18vw, 120px);
+  padding: 0 14px;
+  font-weight: 800;
+  font-size: clamp(16px, 2vw, 18px);
+  border: var(--stroke-2) solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.05);
+  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+
+.ext-split-btn {
+    display: flex;
+    border: 2px solid black;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+}
+
+.ext-main {
+    padding: 12px 16px;
+    background: white;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: clamp(14px, 3.5vw, 18px);
+    width: clamp(60px, 16vw, 72px);
+    text-align: center;
+}
+
+.ext-arrow {
+    padding: 12px 14px;
+    background: #e8e8e8;
+    border: none;
+    cursor: pointer;
+    font-weight: 900;
+    font-size: clamp(14px, 3.5vw, 18px);
+    width: 42px;
+    text-align: center;
+}
+
+.ext-arrow:hover {
+    background: #d4d4d4;
+}
+
+#extBtn:hover,
+.ext-btn:hover,
+.side-btn:hover,
+.save-main:hover,
+.save-arrow:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.14);
+}
+
+
+
+#extBtn:active,
+.ext-btn:active,
+.side-btn:active,
+.close-full-history:active{
+  transform: translateY(1px);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.12), 0 10px 16px rgba(0, 0, 0, 0.16);
+}
+
+/* Extension menu */
+#extMenu,
+.ext-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 180px;
+  background: #ffffff;
+  border: var(--stroke-2) solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+  padding: 8px;
+  display: none;
+  z-index: 200;
+}
+
+.ext-dropdown.open #extMenu,
+.ext-dropdown.open .ext-menu {
+  display: block;
+}
+
+.ext-item,
+.save-btn{
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-weight: 700;
+  padding: 10px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.ext-item:hover	{
+  background: rgba(11, 116, 255, 0.12);
+}
+
+.history-thumb:active{
+    transform: translateY(1px);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.12), 0 10px 16px rgba(0, 0, 0, 0.16);
+}
+
+/* ---------- Main buttons row ---------- */
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(12px, 2vw, 18px);
+  margin: 8px 0 10px;
+  flex-wrap: wrap;
+}
+
+/* Primary button style */
+.history-btn, 
+.dropdown-btn,
+#historyBtn,
+#fullHistoryBtn,
+.button,
+.modal-btn,
+#generateBtn,
+#printBtn{
+  appearance: none;
+  border: var(--stroke-2) solid var(--border);
+  border-radius: var(--radius-md);
+
+  padding: 10px 16px;          /* was 12px 18px */
+  min-width: 128px;            /* was 140px */
+
+  font-weight: 800;
+  font-size: clamp(14px, 1.9vw, 17px); /* slightly smaller */
+
+  color: #ffffff;
+  background: linear-gradient(180deg, var(--primary) 0%, var(--primary-2) 100%);
+  cursor: pointer;
+  box-shadow: 0 10px 0 rgba(0, 0, 0, 0.12), 0 10px 18px rgba(0, 0, 0, 0.15);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+
+
+.button:hover,
+.history-btn:hover,
+ button:hover,
+#fullHistoryBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 0 rgba(0, 0, 0, 0.12), 0 16px 24px rgba(0, 0, 0, 0.18);
+  filter: brightness(1.02);
+}
+
+.button:active,
+.buttons button:active,
+.history-btn:active,
+#fullHistoryBtn:active,
+.modal-btn:active{
+  transform: translateY(1px);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.12), 0 10px 16px rgba(0, 0, 0, 0.16);
+}
+
+
+	/* Save As dropdown wrapper (if you have it) */
+/* =========================================
+   FIX: Make "Save As" dropdown look like .com
+   (paste at END of style.css)
+   ========================================= */
+
+	
+
+/* ---------- QR box ---------- */
+.qr-center-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: clamp(10px, 2.2vw, 18px) 0 clamp(14px, 2.4vw, 20px);
+}
+
+.qr-box {
+  width: min(420px, 78vw);
+  aspect-ratio: 1 / 1;
+  border: var(--stroke) solid var(--border);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 16px 26px rgba(0,0,0,0.18);  /* ← this is NOT like history items */
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  position: relative;
+  transition: transform 120ms ease, filter 120ms ease;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 10px 0 rgba(0, 0, 0, 0.12), 0 10px 18px rgba(0, 0, 0, 0.15);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+
+.qr-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 0 rgba(0, 0, 0, 0.12), 0 16px 24px rgba(0, 0, 0, 0.18);
+  filter: brightness(1.02);
+}
+
+.qr-box:active{
+  transform: translateY(1px);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.12), 0 10px 16px rgba(0, 0, 0, 0.16);
+}
+
+
+#qrCanvas {
+  width: min(320px, 64vw);
+  height: auto;
+  border-radius: 16px;
+}
+
+#qrPlaceholder {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;   /* center horizontally */
+    align-items: center;       /* center vertically */
+
+    text-align: center;
+
+    font-weight: 900;
+    font-size: clamp(17px, 2.7vw, 26px);
+
+    color: #0b1020;
+    opacity: 0.95;
+
+    position: absolute;        /* sit inside the QR box */
+    inset: 0;                  /* stretch to all sides */
+    pointer-events: none;      /* click-through so QR still works */
+}
+
+
+/* ---------- Side History panel ---------- */
+.side-history {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  width: 100%;
+  margin: 0;
+  min-width: 0;
+    margin-top: 21px;
+    padding-top: 0;
+}
+
+.side-history-box {
+  width: 100%;
+  height: 100%;
+  border: var(--stroke) solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--panel-2);
+  box-shadow: var(--shadow-md);
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  margin-top: 0px;
+	padding-top: 0px;	
+}
+
+.side-history-box .title,
+.side-history-box .history-title {
+  font-size: clamp(22px, 2.6vw, 30px);
+  margin: 0;          /* no extra spacing above */
+  font-weight: 900;
+}
+
+
+/* Hide sidebar items + Full History button by default (prevents “flash” on load) */
+#historySmall {
+  display: none;
+}
+#fullHistoryBtn {
+  display: none;
+}
+
+/* Small history list */
+#historySmall {
+  width: 100%;
+  display: none; /* will become flex via JS */
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+
+/* Each sidebar history item */
+.history-item {
+  width: 100%;
+
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  cursor: pointer;
+  transition: transform 120ms ease, filter 120ms ease;
+}
+
+.history-item:hover,
+.full-history-item:hover{
+  transform: translateY(-4px);
+  filter: brightness(1.03);
+}
+
+.history-thumb:hover{
+    transform: translateY(-1px);
+  box-shadow: 0 12px 0 rgba(0, 0, 0, 0.12), 0 16px 24px rgba(0, 0, 0, 0.18);
+  filter: brightness(1.02);
+}
+
+.history-thumb:active{
+    transform: translateY(1px);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.12), 0 10px 16px rgba(0, 0, 0, 0.16);
+}
+
+.history-thumb {
+  width: 88px;
+  height: 88px;
+  background: #fff;
+  border: var(--stroke-2) solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.14);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  box-shadow: 0 10px 0 rgba(0, 0, 0, 0.12), 0 10px 18px rgba(0, 0, 0, 0.15);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+
+.history-thumb img {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+}
+
+
+.history-label {
+  font-weight: 800;
+  font-size: 14px;
+  opacity: 0.95;
+}
+
+/* ---------- Full history modal ---------- */
+#fullHistoryOverlay {
+  display: none; /* JS toggles to flex */
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 26, 0.6);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+#fullHistoryBox {
+  position: relative;
+  overflow-y: auto;
+  padding-top: 60px; /* Space for title + close button */width: min(650px, 90vw) !important;
+  height: 96vh !important;
+  height: min(640px, 96vh) !important;
+  max-height: none !important;
+  overflow-y: auto;
+  overflow: hidden; /* container stays clean */
+  overflow-y: hidden;
+  overflow-x: hidden;
+  background: rgba(255, 255, 255, 0.30); /* transparent glass look */
+  backdrop-filter: blur(12px);          /* optional: modern frosted effect */
+  border: 2px solid rgba(255,255,255,0.35);
+  border: var(--stroke) solid var(--border);
+  border-radius: 22px;
+  box-shadow: var(--shadow-lg);
+  padding: 18px;
+  position: relative;
+    height: 90vh;
+}
+
+#fullHistoryBox h2 {
+  text-align: center;
+  margin: 4px 0 14px;
+  font-weight: 900;
+  font-size: clamp(24px, 3.2vw, 34px);
+}
+
+/* Close button (if you have it) */
+#closeFullHistoryBtn,
+.close-full-history,
+.full-history-close {
+  z-index: 9999;       /* ← on top of everything */
+  position: absolute;
+  pointer-events: auto;
+  top: 14px;
+  right: 14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: var(--stroke-2) solid var(--border);
+  background: #ff4d4d;
+  color: #fff;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 900;
+  box-shadow: 0 10px 0 rgba(0, 0, 0, 0.12), 0 10px 18px rgba(0, 0, 0, 0.15);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+
+.close-full-history:hover,
+.full-history-close:hover{
+    transform: translateY(-1px);
+  box-shadow: 0 12px 0 rgba(0, 0, 0, 0.12), 0 16px 24px rgba(0, 0, 0, 0.18);
+  filter: brightness(1.02);
+}
+
+.close-full-history:active,
+.full-history-close:active{
+      transform: translateY(1px);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.12), 0 10px 16px rgba(0, 0, 0, 0.16);
+}
+
+.full-history-item {
+  aspect-ratio: 1 / 1;
+  width: 70px;             /* same as sidebar */
+  height: 70px;
+  min-width: 0;
+
+  background: rgba(255, 255, 255, 0.9);
+  border: var(--stroke-2) solid var(--border);
+  border-radius: 16px;
+  padding: 6px;
+
+  display: flex;               /* ← THIS FIXES IT */
+  flex-direction: column;
+  justify-content: center;     /* ← centers vertically */
+  align-items: center;         /* ← centers horizontally */
+  gap: 6px;
+  box-shadow: 0 10px 0 rgba(0, 0, 0, 0.12), 0 10px 18px rgba(0, 0, 0, 0.15);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+
+  cursor: pointer;
+
+}
+
+
+.full-history-item img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 14px;
+}
+
+/* ---------- Modal (your “Please enter a value.” box) ---------- */
+#modalOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 26, 0.6);
+  z-index: 998;
+}
+
+#modalBox {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+
+    /* Start slightly smaller + slightly above center */
+    transform: translate(-50%, -50%) scale(0.92);
+
+    opacity: 0;
+    transition: opacity 160ms ease, transform 160ms ease;
+    
+    width: min(520px, 92vw);
+    background: rgba(255, 255, 255, 0.92);
+    border: var(--stroke) solid var(--border);
+    border-radius: 22px;
+    box-shadow: var(--shadow-lg);
+    padding: 18px;
+    z-index: 999;
+}
+
+#modalBox.show {
+    display: block !important;
+    opacity: 1;
+
+    /* slight scale-up animation */
+    transform: translate(-50%, -50%) scale(1);
+}
+
+#modalMessage {
+  font-weight: 800;
+  font-size: 18px;
+  text-align: center;
+}
+
+/* Footer watermark */
+.watermark,
+.footer,
+#watermark {
+  position: fixed;
+  right: 18px;
+  bottom: 14px;
+  opacity: 0.72;
+  font-weight: 800;
+  color: rgba(15, 20, 35, 0.75);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+
+/* =========================
+   SAVE AS DROPDOWN (FIX)
+   - hidden on load
+   - does NOT push buttons
+   - same look/hover as .com items
+   ========================= */
+
+.dropdown {
+  position: relative;       /* anchor for the absolute menu */
+  display: inline-block;
+}
+
+#dropdownMenu {
+  /* overlay (no layout shift) */
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+
+  /* hidden by default (prevents open-on-load flash) */
+  display: none;
+
+  /* same "card" styling as .com dropdown */
+  min-width: 200px;
+  background: #ffffff;
+  border: var(--stroke-2) solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+  padding: 8px;
+
+  z-index: 999;             /* stay on top of everything */
+}
+
+/* IMPORTANT: make Save As items behave like .com items */
+#dropdownMenu .save-btn {
+  width: 100%;
+  display: block;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+
+  font-weight: 700;
+  padding: 10px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+
+
+/* ---------- Responsive ---------- */
+
+/* Tablets & below: stack layout and keep perfect symmetry */
+@media (max-width: 860px) {
+  .page-layout {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  /* Keep everything aligned to same left/right gutters */
+  .input-area,
+  .buttons,
+  .qr-center-area,
+  .side-history {
+    width: 100%;
+    max-width: 640px;
+    margin-inline: auto;
+  }
+
+  .side-history-box{
+    width: 100% !important;          /* fill the available width */
+    max-width: 640px !important;     /* keep it consistent with the rest */
+    margin-inline: auto !important;  /* center */
+    height: 300px;
+    padding-top: 12px;
+    padding-bottom: 14px;
+  }
+
+  /* Make sidebar history become a "card" under QR */
+  #historySmall {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  .history-item {
+    max-width: 120px;
+  }
+
+  #qrPlaceholder{
+    font-size: clamp(16.4px, 2.64vw, 24.8px);
+  }
+}
+
+/* Small phones: reduce paddings slightly */
+@media (max-width: 420px) {
+  .main-wrapper {
+    width: calc(100% - 16px); /* ✅ */
+    padding: 14px 14px;
+    border-radius: 20px;
+  }
+
+    .input-area {
+        padding-left: 12px;
+        padding-right: 12px;
+	    padding-inline: 16px;
+    }
+
+    #inputLink {
+        width: 100%;
+    }
+
+    .ext-split-btn {
+        flex-shrink: 0;
+    }
+}
+
+  #extBtn,
+  .side-btn {
+    min-width: 84px;
+    padding: 0 10px;
+  }
+
+  #fullHistoryGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+		margin-left: auto;
+		margin-right: auto;
+  }
+
+
+@media (max-width: 600px) {
+  h1 {
+    margin-bottom: 8px;
+  }
+
+  .buttons {
+    margin: 4px 0;
+    gap: 10px;
+  }
+
+  .qr-center-area {
+    margin: 10px 0;
+  }
+
+  .qr-box {
+    width: 90vw;
+    margin-top: 6px;
+  }
+	
+  #fullHistoryBox {
+    width: 92vw;
+  height: 96vh !important;
+  height: min(475px, 96vh) !important;
+  max-height: none !important;
+  }
+	
+	
+}
+
+
+/* Full history grid rule you wanted: keep 5x5 always.
+   On very small screens it will still be 5 columns, just smaller tiles. */
+@media (max-width: 700px) {
+  #fullHistoryGrid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+			margin-left: auto;
+		margin-right: auto;
+  }
+
+  .full-history-item .history-label {
+    font-size: 12px;
+  }
+
+  #qrPlaceholder{
+    font-size: 25px;
+  }
+}
+
+/* Make .com dropdown ABOVE Save-As dropdown when they overlap */
+.ext-dropdown { position: relative; z-index: 30; }
+.dropdown     { position: relative; z-index: 20; }
+
+#extMenu      { z-index: 40; }  /* .com menu on top */
+#dropdownMenu { z-index: 25; }  /* Save As behind */
+
+
+/* Center the OK button inside the popup */
+#modalBox button,
+#modalBox .ok-btn,
+#modalBox #modalOkBtn {
+  display: block;
+  margin: 14px auto 0; /* auto left/right => centered */
+}
+
+/* =========================
+   FIX: Save As dropdown (match .com dropdown)
+   + no open on load
+   + behind .com dropdown
+   + modal OK centered
+   + QR box slightly smaller
+   ========================= */
+
+/* Keep stacking correct: .com menu on top of Save As menu */
+.input-area { position: relative; z-index: 5; }
+.buttons { position: relative; z-index: 4; }
+#extMenu { z-index: 260; }          /* .com dropdown menu */
+#dropdownMenu { z-index: 220; }     /* Save As dropdown under .com */
+
+/* --- Save As dropdown container --- */
+#dropdownMenu,
+.dropdown-content {
+  display: none; /* IMPORTANT: prevents it showing open on load */
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 200px;
+
+  background: #ffffff;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+  padding: 8px;
+
+  /* make it look like the .com dropdown (opaque, clean) */
+  opacity: 1;
+}
+
+/* Your Save As items are <a>, so style them like .ext-item */
+#dropdownMenu a,
+.dropdown-content a {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+
+  background: transparent;
+  color: var(--ink);
+  border: 0;
+
+  text-align: left;
+  font-weight: 700;
+  padding: 10px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* --- Modal OK button centered --- */
+.modal-box { text-align: center; } /* centers inline text */
+.modal-btn {
+  display: block;
+  margin: 14px auto 0; /* centers the button */
+}
+
+/* --- QR box a bit smaller like your previous style --- */
+.qr-box {
+  width: min(350px, 68vw);
+  padding: 16px;
+  cursor: pointer; /* you wanted pointer back */
+}
+
+#qrCanvas {
+  width: min(270px, 54vw);
+}
+
+/* Nice pointer + hover back on history items too */
+.history-item { cursor: pointer; }
+.history-thumb { cursor: pointer; }
+
+/* =========================
+   SIDE HISTORY: fit inside box
+   + no overflow
+   + correct hover/click area
+   ========================= */
+
+/* Give the History card a stable height so items "live" inside it */
+.side-history-box{
+  height: 488px;  /* adjust how high you want it */
+  overflow: hidden;               /* nothing can visually spill outside */
+}
+
+/* Let the list take the available space and scroll ONLY inside */
+#historySmall{
+    flex: 0 0 auto;     /* ❗ keep items at the top */
+    width: 100%;
+    overflow-y: auto;
+    padding: 6px 0;
+    gap: 14px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* Make the clickable/hover area match the visual card (NOT full width) */
+.history-item{
+  width: max-content;             /* shrink-wrap */
+  max-width: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Keep the thumbnail as the “real” card size */
+.history-thumb{
+  width: 60px;                    /* slightly bigger but still fits */
+  height: 60px;
+  cursor: pointer;
+}
+.history-thumb img{
+  width: 50px;
+  height: 50px;
+}
+
+/* Make sure label doesn't create wide invisible hover zones */
+.history-label{
+  width: 100%;
+  max-width: 120px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* Optional: nicer scrollbar (Chrome/Edge) */
+#historySmall::-webkit-scrollbar{ width: 10px; }
+#historySmall::-webkit-scrollbar-thumb{
+  background: rgba(0,0,0,0.18);
+  border-radius: 999px;
+  border: 3px solid rgba(255,255,255,0.35);
+}
+
+
+/* ================================
+   FULL HISTORY – FIX + RESPONSIVE
+   (paste at the bottom of style.css)
+================================ */
+
+/* Modal container (your HTML uses .full-history-modal) */
+.full-history-modal {
+    width: min(650px, 90vw) !important;
+  height: 960vh;
+  max-height: min(1000px, 92vh);
+    overflow-y: auto;       /* allow vertical scrolling */
+    scroll-behavior: smooth; /* smooth scrolling */
+  position: relative;                /* IMPORTANT: fixes X button hitbox */
+  background: rgba(255, 255, 255, 0.30);
+  backdrop-filter: blur(12px);
+  border: var(--stroke) solid var(--border);
+  border-radius: 22px;
+  box-shadow: var(--shadow-lg);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Title spacing */
+.full-history-modal h2 {
+  margin: 4px 0 12px;
+}
+
+/* Close button stays inside modal */
+.full-history-modal .close-full-history {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 5;
+}
+
+/* ================================
+   FULL HISTORY — CLEAN, RESPONSIVE, FIXED
+================================ */
+
+/* ================================
+   FULL HISTORY – FINAL FIX
+   5×5 ALWAYS, RESPONSIVE SHRINK
+================================ */
+
+#fullHistoryGrid {
+    --tile-size: 78px;
+    --gap-x: 22px;
+    --gap-y: 22px;
+
+    display: grid;
+    grid-template-columns: repeat(5, var(--tile-size));
+
+    width: max-content;          /* take only as much space as needed */
+    margin-inline: auto;         /* PERFECT auto-centering left + right */
+
+    justify-items: center;
+    column-gap: var(--gap-x);
+    row-gap: var(--gap-y);
+
+    padding: 20px 0 25px;
+}
+
+
+.full-history-title {
+    text-align: center;
+    width: 100%;
+}
+
+
+.full-history-item img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+}
+
+/* Make sure history box doesn't break */
+#fullHistoryBox, .full-history-modal {
+    overflow-y: auto;       /* allow vertical scrolling */
+    scroll-behavior: smooth; /* smooth scrolling */
+}
+
+
+/* TILE */
+.full-history-item {
+    width: var(--tile-size);
+    height: var(--tile-size);
+    aspect-ratio: 1/1;
+
+    background: rgba(255,255,255,0.9);
+    border: 2px solid #0b1020;
+    border-radius: 16px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: 5px;
+    box-shadow: 0 10px 18px rgba(0,0,0,0.14);
+    transition: .15s ease;
+}
+
+
+.full-history-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 0 rgba(0, 0, 0, 0.12), 0 16px 24px rgba(0, 0, 0, 0.18);
+  filter: brightness(1.02);
+}
+
+.full-history-item img {
+    width: 60%;
+    height: 60%;
+    margin-bottom: 2px; /* extra space for the text */
+    object-fit: contain;
+}
+
+/* Responsive shrinking */
+@media (max-width: 600px) {
+    #fullHistoryGrid {
+        --tile-size: 54px;
+        --gap-x: 14px;
+        --gap-y: 16px;
+		margin-left: auto;
+		margin-right: auto;
+    }  
+  h1, h2, .title, .header-title { margin: 0 auto 6px; } /* consistent */
+  .main-wrapper { padding-top: 12px; }    
+}
+
+@media (max-width: 420px) {
+    #fullHistoryGrid {
+        --tile-size: 48px;
+        --gap-x: 10px;
+        --gap-y: 12px;
+		margin-left: auto;
+		margin-right: auto;
+    }
+
+      #fullHistoryBox {
+    width: 92vw;
+  height: 96vh !important;
+  height: min(450px, 96vh) !important;
+  max-height: none !important;
+  }
+  
+}
+
+.full-history-item .history-label {
+font-size: calc(var(--tile-size) * 0.135);
+    line-height: 1;
+    max-width: 90%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-top: -2px; /* lifts the text up */
+}
+
+/* ===========================================
+   GLOBAL PERFECT-CENTER FIX
+   =========================================== */
+
+/* 1. Force main content centered always */
+.main-wrapper,
+.page-layout,
+.left-panel,
+.main-area {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: calc(100% - 24px); /* ✅ use % (no scrollbar math) */
+}
+
+/* 2. Input row centered exactly */
+.input-area {
+    width: 100%;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center !important;
+}
+
+/* 3. .com button aligns perfectly next to input */
+.ext-dropdown {
+    display: flex;
+    justify-content: center;
+}
+
+/* 4. Buttons row centered */
+.buttons {
+    width: 100%;
+    max-width: 640px;
+    justify-content: center !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 5. QR area centered */
+.qr-center-area {
+    width: 100%;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center !important;
+}
+
+/* 6. Side history box centered */
+.side-history-box,
+.side-history {
+    width: 100%;
+    max-width: 640px !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 7. Full History modal centered cleanly */
+#fullHistoryBox,
+.full-history-modal {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* 8. Fix slight right-shift on small screens */
+@media (max-width: 860px) {
+    .page-layout {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+        h1, h2, .title, .header-title { margin: 0 auto 2px; } /* consistent */
+  .main-wrapper { padding-top: 12px; }    
+
+    .side-history-box,
+    .input-area,
+    .buttons,
+    .qr-center-area {
+        max-width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        align-items: center;
+    }
+  .side-history-box{
+    width: 100% !important;          /* fill the available width */
+    max-width: 640px !important;     /* keep it consistent with the rest */
+    margin-inline: auto !important;  /* center */
+    height: 300px;
+    padding-top: 12px;
+    padding-bottom: 14px;
+  }
+	
+	/* Force history items into ONE ROW */
+#historySmall {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important; /* keep all in one line */
+    justify-content: center;
+    gap: 16px;
+    overflow-x: auto;             /* scroll if too many items */
+    overflow-y: hidden;
+}
+
+
+}
+
+	
+.full-history-item {
+  box-shadow: 0 10px 0 rgba(0, 0, 0, 0.12), 0 10px 18px rgba(0, 0, 0, 0.15);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+.full-history-item:hover {
+  transform: translateY(-4px);
+  filter: brightness(1.03);
+}
+.full-history-item:active {
+  transform: translateY(1px) !important;
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.12), 0 10px 16px rgba(0, 0, 0, 0.16) !important;
+}
+
+/* =========================================
+   SAVE AS split button = like .com split,
+   but with BLUE button colors + same hover/active
+   ========================================= */
+
+.save-split-btn{
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  overflow: visible;
+
+  border: var(--stroke-2) solid var(--border);
+  border-radius: var(--radius-md);
+
+  /* match the blue buttons "raised" look */
+  box-shadow: 0 10px 0 rgba(0, 0, 0, 0.12), 0 10px 18px rgba(0, 0, 0, 0.15);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+
+.save-main{ border-radius: var(--radius-md) 0 0 var(--radius-md); }
+.save-arrow{ border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+
+/* same hover as .button */
+.save-split-btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 12px 0 rgba(0, 0, 0, 0.12), 0 16px 24px rgba(0, 0, 0, 0.18);
+  filter: brightness(1.02);
+}
+
+/* same active as .button (works when pressing either half) */
+.save-split-btn:active,
+.save-split-btn:has(.save-main:active),
+.save-split-btn:has(.save-arrow:active){
+  transform: translateY(1px);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.12), 0 10px 16px rgba(0, 0, 0, 0.16);
+  filter: none;
+}
+
+.save-main,
+.save-arrow{
+  appearance: none;
+  border: 0;
+  margin: 0;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 18px;
+  font-weight: 800;
+  font-size: clamp(15px, 2vw, 18px);
+  color: #fff;
+
+  /* BLUE like Generate/Print */
+  background: linear-gradient(180deg, var(--primary) 0%, var(--primary-2) 100%);
+}
+
+/* right side like the arrow half in .com split */
+.save-arrow{
+  padding-inline: 14px;
+  min-width: 78px;
+  background: linear-gradient(180deg, var(--primary-2) 0%, var(--primary) 100%);
+  box-shadow: inset var(--stroke-2) 0 0 rgba(0,0,0,0.55); /* divider line */
+}
+
+/* Dropdown menu = same style as .com dropdown */
+.save-format-menu{
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 180px;
+
+  background: #ffffff;
+  border: var(--stroke-2) solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+  padding: 8px;
+
+  display: none;
+  z-index: 240;
+}
+
+.save-format-item{
+  width: 100%;
+  border: 0;
+  background: transparent;
+
+  text-align: left;
+  font-weight: 700;
+  padding: 10px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.save-format-item:hover{
+  background: rgba(11, 116, 255, 0.12);
+}
+
+/* =========================
+   SAVE AS split button - inline + fits + dropdown works
+   (paste at VERY BOTTOM)
+   ========================= */
+
+/* tighter row so 3 buttons fit in the left column */
+.buttons{
+  gap: 12px;
+}
+
+/* make Save As split match the same sizing */
+.save-split-btn{
+  flex: 0 1 auto;
+}
+
+.save-main,
+.save-arrow{
+  padding: 10px 16px;
+  font-size: clamp(14px, 1.9vw, 17px);
+}
+
+.save-arrow{
+  min-width: 68px;                    /* was ~74 */
+  padding-inline: 10px;
+}
+
+/* JS will toggle this class */
+.save-split-btn.open .save-format-menu{
+  display: block;
+}
+
+/* make sure menu is always above everything */
+.save-format-menu{
+  z-index: 999;
+}
+
+/* --- STOP wrapper from animating both halves --- */
+.save-split-btn:hover,
+.save-split-btn:active{
+  transform: none !important;
+  box-shadow: 0 10px 0 rgba(0, 0, 0, 0.12), 0 10px 18px rgba(0, 0, 0, 0.15) !important;
+  filter: none !important;
+}
+
+/* --- EACH HALF gets its own hover/active --- */
+.save-main,
+.save-arrow{
+  transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+}
+
+/* hover only the hovered half */
+.save-main:hover,
+.save-arrow:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.14);
+}
+
+/* active only the pressed half */
+.save-main:active,
+.save-arrow:active{
+  transform: translateY(1px);
+  filter: none;
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.12), 0 10px 16px rgba(0, 0, 0, 0.16);
+}
+
+/* ===== Split button: SEPARATE hover/active per half ===== */
+
+/* keep wrapper static (no shared hover/active) */
+.save-split-btn:hover,
+.save-split-btn:active{
+  transform: none !important;
+  filter: none !important;
+}
+
+/* each half animates separately */
+.save-main,
+.save-arrow{
+  position: relative;
+  z-index: 1;
+  transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+}
+
+/* hover only the hovered half */
+.save-main:hover,
+.save-arrow:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.14);
+}
+
+/* active only the pressed half */
+.save-main:active,
+.save-arrow:active{
+  transform: translateY(1px);
+  filter: none;
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.12), 0 10px 16px rgba(0, 0, 0, 0.16);
+}
+
+/* ===== FINAL: put ALL buttons on ONE ROW (no size changes) ===== */
+.buttons{
+  flex-wrap: nowrap !important;      /* force single row */
+  justify-content: center;
+  align-items: center;
+}
+
+/* never let buttons shrink and clip text */
+.buttons > *{
+  flex: 0 0 auto;
+}
+
+/* keep Save split in the row */
+.save-split-btn{
+  flex: 0 0 auto;
+}
+
+/* make the right "format" half a bit less wide (compact PDF) */
+.save-arrow{
+  min-width: 74px;      /* smaller than before */
+  padding-inline: 10px;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+/* Mobile: put Save As on the bottom */
+@media (max-width: 520px){
+  .buttons{
+    flex-wrap: wrap !important;
+    justify-content: center;
+  }
+
+  .save-split-btn{
+    order: 99;
+    width: fit-content !important;   /* <<< THIS fixes the stretched border */
+    margin: 10px auto 0;
+  }
+
+  .side-history{
+        margin-top: 27px;
+  }
+
+  #qrPlaceholder{
+font-size: clamp(20px, 3.4vw, 34px);
+
+  }
+  
+
+}
+
+
+/* Force: 2 buttons on first row + Save As on second row (for medium screens too) */
+@media (max-width: 950px) {
+  .buttons{
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    justify-items: center;
+  }
+
+  /* Make the normal buttons fill each grid cell */
+  .buttons > button,
+  .buttons > .button{
+    width: 100%;
+    min-width: 0; /* overrides the 140px min-width feeling */
+  }
+
+  /* Put Save As split button on its own row */
+  .save-split-btn{
+    grid-column: 1 / -1;
+    width: fit-content !important;
+    justify-self: center;
+    margin-top: 6px;
+  }
+}
+
+/* ✅ Side history card: when layout stacks, keep it like the small-phone look */
+@media (max-width: 860px){
+  .side-history{
+    width: min(92vw, 420px) !important;  /* centered, not full-width */
+    max-width: none !important;
+    margin-inline: auto !important;
+  }
+
+  .side-history-box{
+    width: 100% !important;          /* fill the available width */
+    max-width: 400px !important;     /* keep it consistent with the rest */
+    margin-inline: auto !important;  /* center */
+    height: 300px;
+    padding-top: 12px;
+    padding-bottom: 14px;
+    padding-inline: 16px !important;
+  }
+
+  .main-wrapper{
+    width: calc(100% - 24px) !important;
+    min-width: 0 !important;
+  }
+
+  #historySmall{
+    width: max-content !important;
+    max-width: 100%;
+    margin-inline: auto !important;
+  }
+}
+
+/* Optional: even tighter on very small phones */
+@media (max-width: 420px){
+  .side-history,
+  .side-history-box{
+    width: min(92vw, 360px) !important;
+  }
+
+    #historySmall{
+    width: max-content !important;
+    max-width: 100%;
+    margin-inline: auto !important;
+  }
+}
+
+/* =========================
+   FIX: Mobile history card width + perfect centering
+   (paste at END of style.css)
+   ========================= */
+@media (max-width: 860px) {
+  /* Make the history section use the same full width as the rest */
+  .side-history,
+  .side-history-box {
+    width: 100% !important;
+    max-width: none !important;
+    margin-inline: auto !important;
+    box-sizing: border-box;
+  }
+
+  /* Center the row of 3 items */
+  #historySmall {
+    width: 0% !important;            /* IMPORTANT: prevents "off-center" */
+    display: flex;                     /* (JS also sets this) */
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 16px !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    overflow: visible !important;      /* avoid scroll shifting */
+  }
+
+  /* Make each item not stretch (stretching breaks centering) */
+  #historySmall .history-item {
+    width: auto !important;
+    flex: 0 0 auto !important;
+    max-width: 120px !important;
+  }
+}
+
+
+/* =========================
+   HISTORY DELETE SYSTEM
+   ========================= */
+
+/* tiny red X on each history item */
+.history-thumb,
+.full-history-item{
+  position: relative;
+}
+
+.hist-del{
+  position: absolute;
+  top: -10px;
+  right: -10px;
+
+  width: 28px;
+  height: 28px;
+
+  border-radius: 10px;
+  border: var(--stroke-2) solid var(--border);
+  background: #ff4d4d;
+  color: #fff;
+
+  font-weight: 900;
+  font-size: 16px;
+  line-height: 1;
+
+  display: grid;
+  place-items: center;
+
+  cursor: pointer;
+  z-index: 6;
+
+  /* stop global `button:hover` from messing with it */
+  transform: none !important;
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+  box-shadow: 0 10px 0 rgba(0,0,0,0.12), 0 10px 18px rgba(0,0,0,0.15);
+}
+
+.hist-del:hover{
+  transform: translateY(-1px) !important;
+  box-shadow: 0 12px 0 rgba(0,0,0,0.12), 0 16px 24px rgba(0,0,0,0.18);
+  filter: brightness(1.03);
+}
+
+.hist-del:active{
+  transform: translateY(1px) !important;
+  box-shadow: 0 8px 0 rgba(0,0,0,0.12), 0 10px 16px rgba(0,0,0,0.16);
+  filter: none;
+}
+
+.thumb-fallback{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+/* Clear button (inside Full History modal) */
+.clear-full-history{
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  height: 44px;
+    justify-content: center;   /* center horizontally */
+    align-items: center;       /* center vertically */
+  border-radius: 12px;
+  border: var(--stroke-2) solid var(--border);
+  background: linear-gradient(180deg, #ff5a5a 0%, #ff2f2f 100%);
+  color: #fff;
+
+  font-weight: 900;
+  cursor: pointer;
+
+  box-shadow: 0 10px 0 rgba(0, 0, 0, 0.12), 0 10px 18px rgba(0, 0, 0, 0.15);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+  z-index: 7;
+
+  /* don't force big width like normal buttons */
+  min-width: 0 !important;
+}
+
+.clear-full-history:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 12px 0 rgba(0,0,0,0.12), 0 16px 24px rgba(0,0,0,0.18);
+  filter: brightness(1.03);
+}
+
+.clear-full-history:active{
+  transform: translateY(1px);
+  box-shadow: 0 8px 0 rgba(0,0,0,0.12), 0 10px 16px rgba(0,0,0,0.16);
+  filter: none;
+}
+
+/* =========================
+   CONFIRM MODAL (YES / NO)
+   ========================= */
+
+#confirmOverlay{
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 26, 0.6);
+  z-index: 1001;
+}
+
+#confirmBox{
+  display: none;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.92);
+  opacity: 0;
+  transition: opacity 160ms ease, transform 160ms ease;
+
+  width: min(520px, 92vw);
+  background: rgba(255, 255, 255, 0.92);
+  border: var(--stroke) solid var(--border);
+  border-radius: 22px;
+  box-shadow: var(--shadow-lg);
+  padding: 18px;
+
+  z-index: 1002;
+}
+
+#confirmBox.show{
+  display: block !important;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+#confirmMessage{
+  font-weight: 900;
+  font-size: 18px;
+  text-align: center;
+  margin: 0;
+}
+
+.confirm-actions{
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.confirm-btn{
+  min-width: 120px;
+}
+
+/* make NO grey */
+.confirm-no{
+  background: linear-gradient(180deg, #9aa6b2 0%, #6b7785 100%) !important;
+}
+
+/* allow the X button to stick out */
+.history-thumb,
+.full-history-item{ overflow: visible !important; }
+
+/* Keep X where it was (outside corner) but ABOVE the History button shadow */
+.side-history,
+#historySmall{
+  position: relative;
+  overflow: visible;      /* important if you had hidden somewhere */
+}
+
+.side-history .history-btn{
+  position: relative;
+  z-index: 2;             /* the button stays below the items */
+}
+
+/* The list & items sit above the button */
+#historySmall{
+  z-index: 5;
+  padding-top: 12px;      /* so the first item’s X isn’t under the button shadow */
+}
+
+#historySmall .history-thumb{
+  position: relative;
+  z-index: 6;
+}
+
+/* X back to original position + strong z-index */
+#historySmall .hist-del{
+  top: -10px;
+  right: -10px;
+  z-index: 999;
+}
+
+/* Fix history QR thumbs: always fit inside the frame + rounded */
+.history-thumb{
+  padding: 3px;              /* space so QR sits nicely inside the border */
+  box-sizing: border-box;
+}
+
+.history-thumb img{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  display: block;
+  border-radius: 12px;       /* makes the QR image itself rounded */
+  background: #fff;          /* clean white behind QR */
+}
+
+/* Full History: make QR fill the tile more (less empty space) */
+.full-history-item{
+  display: grid !important;
+  grid-template-rows: 1fr auto; /* image area + label */
+  padding: 12px !important;      /* ↓ reduce inner padding (space) */
+
+  gap: 3px !important;          /* ↓ reduce gap between image & label */
+}
+
+.full-history-item img{
+  width: 100% !important;       /* fill the image row */
+  height: 100% !important;
+  object-fit: contain !important;
+  border-radius: 14px;
+  background: #fff;
+}
+
+/* optional: slightly smaller label to give even more room */
+.full-history-item .history-label{
+  font-size: 11px;
+  line-height: 1.05;
+}
+
+.full-history-item{
+  align-content: start;          /* μην το κεντράρει κάθετα */
+}
+
+.full-history-item img{ 
+  transform: translateY(-4px); 
+}
+
+.full-history-item .history-label{ 
+  transform: translateY(-3px); 
+}
+
+/* Smaller text on small screens */
+@media (max-width: 520px){
+  h1, h2, .title, .header-title{
+    font-size: clamp(18px, 5.2vw, 26px) !important;
+  }
+
+  .history-btn, .dropdown-btn, #historyBtn, #fullHistoryBtn, .button, .modal-btn,
+  #generateBtn, #printBtn, .save-main, .save-arrow{
+    font-size: clamp(13px, 3.4vw, 15px) !important;
+  }
+
+  .history-label{
+    font-size: 12px !important;
+  }
+
+  .full-history-item .history-label{
+    font-size: 10px !important;
+  }
+
+  #qrPlaceholder{
+    font-size: clamp(15px, 4.2vw, 20px) !important;
+  }
+
+    #fullHistoryBox {
+    width: 92vw;
+  height: 96vh !important;
+  height: min(410px, 96vh) !important;
+  max-height: none !important;
+  }
+}
+
+
+
+/* =========================================
+   TOAST NOTIFICATIONS (stack up to 3)
+   ========================================= */
+.toast-stack{
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(560px, 92vw);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 99999;
+  pointer-events: none;
+}
+
+.toast{
+  pointer-events: auto;
+  display: grid;
+  grid-template-columns: 12px 1fr auto;
+  align-items: center;
+  gap: 12px;
+
+  background: rgba(255,255,255,0.92);
+  border: 2px solid #0b1020;
+  border-radius: 18px;
+  padding: 12px 12px;
+  box-shadow: 0 12px 0 rgba(0,0,0,0.12), 0 18px 28px rgba(0,0,0,0.18);
+
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 160ms ease, transform 160ms ease, filter 160ms ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.toast.show{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast.hide{
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.toast__dot{
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #5b6b8a; /* default info */
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
+}
+
+.toast--success .toast__dot{ background: #22c55e; }
+.toast--error   .toast__dot{ background: #ef4444; }
+.toast--warn    .toast__dot{ background: #f59e0b; }
+
+.toast__msg{
+  font-weight: 800;
+  font-size: 15px;
+  color: #0b1020;
+  text-align: center;
+  line-height: 1.2;
+  padding: 0 6px;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.toast__count{
+  font-weight: 900;
+  font-size: 12px;
+  padding: 2px 8px;
+  border: 2px solid #0b1020;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.85);
+}
+
+.toast__close{
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 2px solid #0b1020;
+  background: #ff4d4d;
+  color: #fff;
+  font-weight: 900;
+  font-size: 18px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 8px 0 rgba(0,0,0,0.12);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+
+.toast__close:hover{ filter: brightness(1.05); }
+.toast__close:active{
+  transform: translateY(1px);
+  box-shadow: 0 6px 0 rgba(0,0,0,0.12);
+}
+
+@media (max-width: 600px){
+  .toast-stack{ top: 12px; gap: 10px; }
+  .toast{
+    grid-template-columns: 10px 1fr auto;
+    padding: 10px 10px;
+    border-radius: 16px;
+  }
+  .toast__msg{ font-size: 14px; }
+  .toast__close{
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+  }
+}
+
+
+
+/* =========================
+   HISTORY EMPTY STATE + PIN FULL HISTORY BUTTON
+   (keeps Full History in the same spot even when empty)
+   ========================= */
+
+/* Make the sidebar a real column so we can push the Full History button down */
+.side-history{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* When History dropdown is open, let the list fill the space */
+#historySmall{
+  flex: 1 1 auto;
+  min-height: 170px;          /* keeps the reserved space even when empty */
+  justify-content: flex-start;
+}
+
+/* Push Full History button to the bottom ALWAYS (same position as when items exist) */
+#fullHistoryBtn{
+  margin-top: auto;
+}
+
+/* Empty labels */
+.history-empty{
+  width: 100%;
+  padding: 10px 12px;
+  text-align: center;
+  font-weight: 900;
+  opacity: 0.72;
+}
+
+.history-empty-sub{
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 800;
+  opacity: 0.75;
+}
+
+/* Empty state: sit just under the History button (desktop) */
+#historySmall.is-empty{
+  justify-content: flex-start;
+  padding-top: 22px;   /* move text a bit down from the History button */
+}
+
+
+/* Full history empty message centered */
+#fullHistoryGrid.is-empty{
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  min-height: 240px;
+}
+
+/* Mobile tweaks */
+@media (max-width: 860px){
+  #historySmall{ min-height: 120px; }
+
+  /* Mobile: fold the empty text up closer to the History button */
+  #historySmall.is-empty{
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding-top: 18px !important;
+  }
+
+  #fullHistoryGrid.is-empty{ min-height: 180px; }
+
+  .history-empty{
+      font-size: 16px;
+  }
+  .history-empty-sub{
+    font-size: 10px;
+  }
+}
+
+/* ============================================
+   MOBILE FIX: Move empty text up under History
+   ============================================ */
+@media (max-width: 860px){
+
+  /* History list area */
+  #historySmall.is-empty{
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+
+    padding-top: 8px !important;   /* ⬅️ Move the message UP */
+    margin-top: 6px !important;    /* extra fine-tune */
+    min-height: 0 !important;      /* remove forced tall space */
+  }
+
+  /* Space reserved for bottom button (do NOT change button height) */
+  #historySmall{
+    padding-bottom: 90px !important;
+  }
+
+  /* The message itself */
+  .history-empty{
+    margin-top: 4px !important;    /* ⬅️ pull text closer to History button */
+    text-align: center;
+  }
+  .history-empty-sub{
+    margin-top: -2px !important;   /* tighter */
+  }
+}
+
+/* =========================================================
+   HISTORY SIDEBAR: center empty text + keep Full History fixed
+   (mobile friendly, fixes the weird text folding)
+   ========================================================= */
+
+/* IMPORTANT: undo the old "width: 0%" hack that causes the empty text to fold */
+@media (max-width: 860px){
+  #historySmall{ width: 100% !important; }
+}
+
+/* Let the content area stretch so the bottom button stays in place */
+#historySmall{
+  flex: 1 1 auto;
+  min-height: 0;              /* allows scrolling inside without growing the card */
+}
+
+/* Stop pin/absolute rules (keeps clicks + keeps the original button size) */
+#fullHistoryBtn{
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+
+  margin-top: auto !important; /* pushes to bottom */
+  align-self: center;
+  white-space: nowrap;         /* keep “Full History” on one line */
+}
+
+/* Empty message (in sidebar) */
+#historySmall.is-empty{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  gap: 8px;
+  padding: 0 16px;
+}
+
+.history-empty{
+  text-align: center;
+  max-width: 280px;
+}
+
+.history-empty-title{
+  font-weight: 900;
+  font-size: clamp(15px, 3.8vw, 18px);
+  opacity: 0.9;
+}
+
+.history-empty-sub{
+  font-weight: 800;
+  font-size: clamp(11px, 3.1vw, 13px);
+  opacity: 0.7;
+  line-height: 1.2;
+}
+
+/* Mobile: sidebar history items stay in a row; empty state stays centered */
+@media (max-width: 860px){
+  #historySmall:not(.is-empty){
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 16px !important;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px 0;
+    
+  }
+
+  #fullHistoryBtn { margin-bottom: -100px; } /* increase to move it up */
+}
+
+/* Full History modal empty label */
+.full-empty{
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 28px 8px;
+}
+
+.full-empty-title{
+  font-weight: 900;
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+.full-empty-sub{
+  margin-top: 6px;
+  font-weight: 800;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+#fullHistoryBtn { margin-bottom: 8px; } /* increase to move it up */
+
+
+
+
+/* ============================================
+   FULL HISTORY EMPTY STATE — DVD BOUNCE
+   (paste at the very bottom so it overrides older rules)
+   ============================================ */
+
+/* Make modal layout allow the grid area to take remaining height */
+#fullHistoryBox{
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Let the grid take the remaining space under the title */
+#fullHistoryGrid{
+  flex: 1 1 auto;
+}
+
+/* Override your previous centered empty-state and turn it into a "screensaver area" */
+#fullHistoryGrid.is-empty{
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+  overflow: hidden !important;
+  min-height: 240px !important;
+}
+
+/* The bouncing element (ONLY inside the full history grid) */
+#fullHistoryGrid.is-empty .dvd-bounce{
+  position: absolute !important;
+  left: 0;
+  top: 0;
+  width: max-content;
+  pointer-events: none;
+
+  /* keep your style but make it look like a floating badge */
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(10px);
+  border: var(--stroke-2) solid var(--border);
+  box-shadow: 0 10px 18px rgba(0,0,0,0.14);
+
+  will-change: transform;
+}
+
+/* Slightly tighter empty-state text for the badge */
+#fullHistoryGrid.is-empty .dvd-bounce .history-empty-sub{
+  display: block;
+  margin-top: 4px;
+}
+
+/* Make .COM dropdown items match the PNG dropdown items */
+.ext-item,
+.save-format-item{
+  transition: background 120ms ease, transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+
+/* Same hover as PNG dropdown */
+.ext-item:hover{
+  background: rgba(11, 116, 255, 0.12);
+}
+
+/* Pressed "squeeze" for BOTH dropdowns (overrides button:active rules) */
+.ext-item:active,
+.save-format-item:active{
+  transform: translateY(1px) scale(0.98) !important;
+  background: rgba(11, 116, 255, 0.18) !important;
+  box-shadow: inset 0 3px 0 rgba(0,0,0,0.12) !important;
+  filter: none !important;
+}
+
+/* =========================================================
+   HISTORY TOGGLE – FINAL OVERRIDE (fixes mobile + keeps desktop)
+   ========================================================= */
+
+/* Closed by default */
+.side-history #historySmall,
+.side-history #fullHistoryBtn{
+  display: none !important;
+}
+
+/* Open state */
+.side-history.is-open #historySmall{
+  display: flex !important;
+}
+.side-history.is-open #fullHistoryBtn{
+  display: inline-flex !important;
+}
+
+/* ================================
+   MOBILE: Side History like screenshot
+   - History button (top)
+   - 3 items in ONE ROW (middle)
+   - Full History button (bottom)
+   ================================ */
+@media (max-width: 860px) {
+  /* Make the history box feel like the screenshot */
+  .side-history-box{
+    gap: 16px;                 /* same spacing vibe as your buttons */
+    min-height: 260px;         /* prevents the box from looking “too short” */
+  }
+
+  /* Always take full width inside the box */
+  .side-history.is-open #historySmall{
+    width: 100% !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+  }
+
+  /* ✅ When we HAVE items: show them in a single row (3 columns) */
+  .side-history.is-open #historySmall:not(.is-empty){
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;                 /* spacing between the 3 items */
+    align-items: start;
+    justify-items: center;
+    flex: 0 0 auto;            /* don't stretch and create huge empty space */
+  }
+
+  /* Each item fills its grid cell nicely */
+  .side-history.is-open #historySmall:not(.is-empty) .history-item{
+    width: 100%;
+  }
+
+  /* ✅ When EMPTY: keep the message centered like the screenshot */
+  .side-history.is-open #historySmall.is-empty{
+    display: flex !important;
+    flex: 1 1 auto;            /* lets the Full History button sit at the bottom */
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0 !important;
+  }
+
+  /* Keep empty text neat on mobile */
+  .side-history.is-open #historySmall.is-empty .history-empty{
+    margin: 0 !important;
+    padding: 0 12px !important;
+    text-align: center;
+  }
+
+  /* ✅ Button positioning:
+     - Empty: Full History pinned to bottom (like screenshot)
+     - Has items: Full History sits right under the row with normal spacing */
+  .side-history.is-open #historySmall.is-empty + #fullHistoryBtn{
+    margin-top: auto !important;
+  }
+  .side-history.is-open #historySmall:not(.is-empty) + #fullHistoryBtn{
+    margin-top: 0 !important;
+  }
+}
+
+/* Bigger QR (less "zoomed out") — final override */
+.qr-box{
+  padding: 3px;            /* was 16px in your later override */
+}
+
+#qrCanvas{
+  width: 100%;              /* fill the available space */
+  max-width: 300px;         /* cap so it doesn’t get huge on desktop */
+  height: auto;
+}
+
+/* Keep the PNG/JPG/PDF "format" button the same width always */
+.save-arrow{
+  width: 77px;        /* adjust if you want slightly wider */
+  min-width: 77px;
+  max-width: 77px;
+
+  justify-content: center;
+  padding-inline: 10px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Clear (X) button inside input */
+.input-wrap{
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+/* make room on the right for the X */
+#inputLink{
+  width: 100%;
+  padding-right: 46px;
+}
+
+.input-clear{
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+
+  border: 0;
+  background: transparent;
+  color: #0b1020;
+
+  display: grid;
+  place-items: center;
+
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+
+  opacity: 0;              /* hidden by default */
+  pointer-events: none;    /* not clickable when hidden */
+  cursor: pointer;
+
+  transition: opacity 120ms ease, transform 120ms ease, background 120ms ease;
+}
+
+.input-clear.show{
+  opacity: 0.55;
+  pointer-events: auto;
+}
+
+.input-clear:hover{
+  opacity: 0.9;
+  background: rgba(11, 116, 255, 0.12);
+}
+
+.input-clear:active{
+  transform: translateY(-50%) scale(0.92);
+}
+
+/* --- Stop the global button hover/active effect on the clear X --- */
+.input-clear,
+.input-clear:hover,
+.input-clear:active{
+  transform: translateY(-50%) !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Optional: keep a simple hover (no lift) */
+.input-clear.show:hover{
+  background: rgba(11, 16, 32, 0.06);
+  opacity: 0.9;
+}
+
+/* Make the text input the same HEIGHT as the .com split dropdown */
+.input-area { align-items: stretch; }
+
+#inputLink{
+  height: var(--control-h);
+  line-height: var(--control-h);
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* if your extension button uses different height, force it too */
+.ext-split-btn{
+  height: var(--control-h);
+}
+
+.ext-main,
+.ext-arrow{
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+
+/* =========================
+   DROPDOWN ANIMATIONS + WIDTH MATCH
+   (paste at VERY BOTTOM)
+   ========================= */
+
+/* --- .com dropdown menu: same width as the .com split button + animated --- */
+#extMenu{
+  /* ensure it can animate (don't use display:none) */
+  display: block !important;
+
+  /* same width as the dropdown button */
+  left: 0;
+  right: 0;
+  width: 100%;
+  min-width: unset !important;
+
+  /* animation closed state */
+  opacity: 0;
+  transform: translateY(-10px);
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 160ms ease,
+    transform 200ms cubic-bezier(.2,.9,.2,1),
+    visibility 0s linear 200ms;
+}
+
+.ext-dropdown.open #extMenu {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+
+  transition:
+    opacity 160ms ease,
+    transform 200ms cubic-bezier(.2,.9,.2,1),
+    visibility 0s;
+}
+
+/* --- Save As format dropdown: animated too (same behavior) --- */
+.save-format-menu {
+  display: block !important; /* override existing display:none */
+  left: 0;
+  right: 0;
+  width: 100%;
+  min-width: unset !important;
+
+  opacity: 0;
+  transform: translateY(-10px);
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 160ms ease,
+    transform 200ms cubic-bezier(.2,.9,.2,1),
+    visibility 0s linear 200ms;
+}
+
+.save-split-btn.open .save-format-menu {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+
+  transition:
+    opacity 160ms ease,
+    transform 200ms cubic-bezier(.2,.9,.2,1),
+    visibility 0s;
+}
+

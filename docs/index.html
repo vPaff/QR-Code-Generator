@@ -1,161 +1,168 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Generator</title>
-			<link rel="shortcut icon" type="image" href="images/logo.png">
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Code Generator</title>
 
-<meta property="og:title" content="QR Code Generator" />
-<meta property="og:description" content="Generate and download QR codes fast." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://vpaff.github.io/QR-Code-Generator/" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="./images/logo.png" />
 
-<meta property="og:image:secure_url" content="https://vpaff.github.io/QR-Code-Generator/preview.png?v=3" />
-<meta property="og:image:type" content="image/png" />
+  <!-- Open Graph / Link Preview -->
+  <meta property="og:title" content="QR Code Generator" />
+  <meta property="og:description" content="Generate and download QR codes fast." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vpaff.github.io/QR-Code-Generator/" />
 
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
+  <!-- IMPORTANT: og:image is required (secure_url alone is not enough) -->
+  <meta property="og:image" content="https://vpaff.github.io/QR-Code-Generator/preview.png?v=3" />
+  <meta property="og:image:secure_url" content="https://vpaff.github.io/QR-Code-Generator/preview.png?v=3" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:image" content="https://vpaff.github.io/QR-Code-Generator/preview.png" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:image" content="https://vpaff.github.io/QR-Code-Generator/preview.png?v=3" />
 
-	
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+  <!-- Google Font (load ONCE) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap"
+    rel="stylesheet"
+  />
 
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+  <!-- Styles -->
+  <link rel="stylesheet" href="./css/style.css" />
 
+  <!-- Force Inter everywhere (prevents Windows inputs/buttons using other fonts) -->
+  <style>
+    :root {
+      --app-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    html, body { font-family: var(--app-font); }
+    button, input, select, textarea { font-family: var(--app-font); }
+  </style>
 </head>
+
 <body>
-
-<div class="main-wrapper">
-
+  <div class="main-wrapper">
     <h1 class="title">QR Code Generator</h1>
 
     <div class="page-layout">
-	
-        <!-- LEFT COLUMN -->
-        <div class="left-col">
+      <!-- LEFT COLUMN -->
+      <div class="left-col">
 
-					<div class="input-area">
-<div class="input-wrap">
-  <input id="inputLink" type="text" placeholder="Enter your link/text...">
-  <button type="button" id="clearInputBtn" class="input-clear" aria-label="Clear text">✕</button>
-</div>
+        <div class="input-area">
+          <div class="input-wrap">
+            <input id="inputLink" type="text" placeholder="Enter your link/text..." />
+            <button type="button" id="clearInputBtn" class="input-clear" aria-label="Clear text">✕</button>
+          </div>
 
-<div class="ext-dropdown">
-
-  <div class="ext-split-btn">
-      <button type="button" id="extMain" class="ext-main">.com</button>
-      <button type="button" id="extArrow" class="ext-arrow">▾</button>
-  </div>
-
-  <div class="ext-menu" id="extMenu">
-    <button type="button" class="ext-item" data-ext=".com">.com</button>
-    <button type="button" class="ext-item" data-ext=".gr">.gr</button>
-    <button type="button" class="ext-item" data-ext=".net">.net</button>
-    <button type="button" class="ext-item" data-ext=".org">.org</button>
-    <button type="button" class="ext-item" data-ext=".io">.io</button>
-    <button type="button" class="ext-item" data-ext=".app">.app</button>
-  </div>
-
-</div>
-
-
-					</div>
-			
-
-            <div class="buttons">
-                <button onclick="generateQR()" class="button">Generate</button>
-                <button onclick="printQR()" class="button">Print QR</button>
-
-<div class="save-split-btn">
-    <button type="button" id="saveMainBtn" class="save-main">Save As</button>
-    <button type="button" id="saveArrowBtn" class="save-arrow">PNG ▾</button>
-
-    <div id="saveFormatMenu" class="save-format-menu">
-        <button class="save-format-item" data-format="png">PNG</button>
-        <button class="save-format-item" data-format="jpg">JPG</button>
-        <button class="save-format-item" data-format="pdf">PDF</button>
-    </div>
-</div>
-
-
-
+          <div class="ext-dropdown">
+            <div class="ext-split-btn">
+              <button type="button" id="extMain" class="ext-main">.com</button>
+              <button type="button" id="extArrow" class="ext-arrow">▾</button>
             </div>
 
-            <div class="qr-center-area">
-                <div class="qr-box" onclick="openFullQR()">
-					<div id="qrPlaceholder">*here's your QR code*</div>
-                    <canvas id="qrCanvas"></canvas>
-                </div>
+            <div class="ext-menu" id="extMenu">
+              <button type="button" class="ext-item" data-ext=".com">.com</button>
+              <button type="button" class="ext-item" data-ext=".gr">.gr</button>
+              <button type="button" class="ext-item" data-ext=".net">.net</button>
+              <button type="button" class="ext-item" data-ext=".org">.org</button>
+              <button type="button" class="ext-item" data-ext=".io">.io</button>
+              <button type="button" class="ext-item" data-ext=".app">.app</button>
             </div>
-
+          </div>
         </div>
 
-        <!-- RIGHT COLUMN -->
-<div class="side-history-box">
-    <div class="side-history">
-        <div class="dropdown">
-            <button class="history-btn dropdown-btn" onclick="toggleHistoryDropdown(event)" aria-expanded="false">History ▾</button>
+        <div class="buttons">
+          <button onclick="generateQR()" class="button">Generate</button>
+          <button onclick="printQR()" class="button">Print QR</button>
+
+          <div class="save-split-btn">
+            <button type="button" id="saveMainBtn" class="save-main">Save As</button>
+            <button type="button" id="saveArrowBtn" class="save-arrow">PNG ▾</button>
+
+            <div id="saveFormatMenu" class="save-format-menu">
+              <button class="save-format-item" data-format="png">PNG</button>
+              <button class="save-format-item" data-format="jpg">JPG</button>
+              <button class="save-format-item" data-format="pdf">PDF</button>
+            </div>
+          </div>
         </div>
 
-<div id="historySmall"></div>
-<button id="fullHistoryBtn" class="history-btn" onclick="openFullHistory()">
-  Full History ▾
-</button>
+        <div class="qr-center-area">
+          <div class="qr-box" onclick="openFullQR()">
+            <div id="qrPlaceholder">*here's your QR code*</div>
+            <canvas id="qrCanvas"></canvas>
+          </div>
+        </div>
+      </div>
 
+      <!-- RIGHT COLUMN -->
+      <div class="side-history-box">
+        <div class="side-history">
+          <div class="dropdown">
+            <button class="history-btn dropdown-btn" onclick="toggleHistoryDropdown(event)" aria-expanded="false">
+              History ▾
+            </button>
+          </div>
+
+          <div id="historySmall"></div>
+
+          <button id="fullHistoryBtn" class="history-btn" onclick="openFullHistory()">
+            Full History ▾
+          </button>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
-		
-    </div>
-</div>
+  <div class="watermark">© vPaff</div>
 
-<div class="watermark">© vPaff</div>
+  <script src="./js/js.js"></script>
 
-<script src="js/js.js"></script>
-<!-- TOAST NOTIFICATIONS -->
-<div id="toastStack" class="toast-stack" aria-live="polite" aria-relevant="additions text"></div>
+  <!-- TOAST NOTIFICATIONS -->
+  <div id="toastStack" class="toast-stack" aria-live="polite" aria-relevant="additions text"></div>
 
-<div id="modalOverlay" class="modal-overlay" onclick="closeModal()"></div>
-<div id="modalBox" class="modal-box">
+  <!-- MODAL -->
+  <div id="modalOverlay" class="modal-overlay" onclick="closeModal()"></div>
+  <div id="modalBox" class="modal-box">
     <p id="modalMessage"></p>
     <button class="modal-btn" onclick="closeModal()">OK</button>
-</div>
+  </div>
 
-<!-- CONFIRM (YES / NO) -->
-<div id="confirmOverlay" class="modal-overlay" onclick="closeConfirm()"></div>
-<div id="confirmBox" class="modal-box confirm-box">
+  <!-- CONFIRM (YES / NO) -->
+  <div id="confirmOverlay" class="modal-overlay" onclick="closeConfirm()"></div>
+  <div id="confirmBox" class="modal-box confirm-box">
     <p id="confirmMessage">Are you sure?</p>
     <div class="confirm-actions">
-        <button id="confirmYesBtn" class="button confirm-btn confirm-yes">Yes</button>
-        <button id="confirmNoBtn" class="button confirm-btn confirm-no">No</button>
+      <button id="confirmYesBtn" class="button confirm-btn confirm-yes">Yes</button>
+      <button id="confirmNoBtn" class="button confirm-btn confirm-no">No</button>
     </div>
-</div>
+  </div>
 
-<!-- FULL HISTORY OVERLAY -->
-<div id="fullHistoryOverlay" class="full-history-overlay">
+  <!-- FULL HISTORY OVERLAY -->
+  <div id="fullHistoryOverlay" class="full-history-overlay">
     <div id="fullHistoryBox">
-<img src="images/clear.png" id="clearFullHistoryBtn" class="clear-full-history" onclick="confirmClearFullHistory(event)">
-</img>
+      <img
+        src="./images/clear.png"
+        id="clearFullHistoryBtn"
+        class="clear-full-history"
+        onclick="confirmClearFullHistory(event)"
+        alt="Clear history"
+      />
 
-<button class="close-full-history" onclick="closeFullHistory()">✕</button>
-        <h2>Full History</h2>
-        <div id="fullHistoryGrid"></div>
+      <button class="close-full-history" onclick="closeFullHistory()">✕</button>
+      <h2>Full History</h2>
+      <div id="fullHistoryGrid"></div>
     </div>
-</div>
-
-
-
+  </div>
 </body>
 </html>
-
-
-

@@ -2609,3 +2609,21 @@ font-size: clamp(20px, 3.4vw, 34px);
 html, body, button, input, select, textarea{
   font-family: var(--app-font) !important;
 }
+
+
+/* FORCE smaller Full History labels on mobile (put at the very bottom) */
+@media (max-width: 700px){
+  #fullHistoryOverlay #fullHistoryGrid .full-history-item .history-label{
+    font-size: 8px !important;
+    line-height: 1 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 420px){
+  #fullHistoryOverlay #fullHistoryGrid .full-history-item .history-label{
+    font-size: 7px !important;
+  }
+}

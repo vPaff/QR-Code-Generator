@@ -1537,7 +1537,7 @@ font-size: calc(var(--tile-size) * 0.135);
   }
 
   .side-history{
-        margin-top: 27px;
+        margin-top: 10px;
   }
 
   #qrPlaceholder{

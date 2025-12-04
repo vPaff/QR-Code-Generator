@@ -3,6 +3,16 @@
    Drop-in replacement style.css
    ========================= */
 
+@font-face{
+  font-family: "Inter";
+  src: url("../fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap; /* fine because we'll hide until ready */
+}
+
+
+
 /* Reset */
 *,
 *::before,
@@ -10,13 +20,8 @@
   box-sizing: border-box;
 }
 html, body {
-	font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     background: linear-gradient(135deg, #dfe7f2, #e8eef7);
     min-height: 100%;
-}
-
-button, input, select, textarea {
-  font-family: inherit;
 }
 
 body {
@@ -2598,18 +2603,9 @@ font-size: clamp(20px, 3.4vw, 34px);
     visibility 0s;
 }
 
-/* ===== FORCE Inter everywhere (fixes "changes after 1ms") ===== */
 :root{
   --app-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 html, body, button, input, select, textarea{
   font-family: var(--app-font) !important;
 }
-
-
-html, body {
-  font-family: var(--app-font, "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif);
-}
-
-
-

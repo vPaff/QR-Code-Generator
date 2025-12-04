@@ -1540,6 +1540,10 @@ font-size: calc(var(--tile-size) * 0.135);
         margin-top: 10px;
   }
 
+  #fullHistoryBtn{
+    margin-top: 100px;
+  }
+
   #qrPlaceholder{
 font-size: clamp(20px, 3.4vw, 34px);
 
@@ -2625,5 +2629,75 @@ html, body, button, input, select, textarea{
 @media (max-width: 420px){
   #fullHistoryOverlay #fullHistoryGrid .full-history-item .history-label{
     font-size: 7px !important;
+  }
+}
+
+/* ==========================================
+   MOBILE: Side History layout LOCK
+   - Full History button always stays bottom
+   - 3 items centered with symmetric spacing
+   ========================================== */
+@media (max-width: 860px){
+
+  /* Make the card a true column with fixed height (you already use ~300px) */
+  .side-history-box{
+    display: flex !important;
+    flex-direction: column !important;
+    height: 300px !important;          /* keep your mobile card height */
+  }
+
+  /* History area takes the "middle" space */
+  .side-history.is-open #historySmall{
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+  }
+
+  /* When we HAVE items: 3 equal columns => perfect symmetry */
+  .side-history.is-open #historySmall:not(.is-empty){
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important; /* equal columns */
+    justify-items: center !important;
+    align-items: start !important;
+    column-gap: 18px !important;       /* symmetric gap between items */
+    padding: 0 12px !important;        /* equal left/right breathing room */
+  }
+
+  .side-history.is-open #historySmall:not(.is-empty) .history-item{
+    width: 100% !important;
+    max-width: 120px !important;
+  }
+
+  /* Empty state stays centered in the available middle space */
+  .side-history.is-open #historySmall.is-empty{
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0 12px !important;
+  }
+
+  /* ✅ Full History ALWAYS at the bottom (same position empty or not) */
+  .side-history.is-open #fullHistoryBtn{
+    position: static !important;
+    margin-top: auto !important;
+    margin-bottom: 0 !important;
+    align-self: center !important;
+  }
+}
+
+@media (max-width: 860px){
+
+  /* 1) Full History: λίγο πιο πάνω για συμμετρικό κενό */
+  .side-history.is-open #fullHistoryBtn{
+    margin-bottom: 14px !important;   /* παίξε 12–18px αν το θες πιο τέλειο */
+  }
+
+  /* 2) Items: κεντραρισμένα μέσα στο διαθέσιμο “μεσαίο” χώρο */
+  .side-history.is-open #historySmall:not(.is-empty){
+    align-content: center !important;  /* κάθετο κεντράρισμα του grid */
+    padding-top: 10px !important;      /* κατεβάζει λίγο τα items */
+    padding-bottom: 10px !important;
   }
 }
